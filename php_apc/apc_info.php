@@ -54,6 +54,8 @@ if(function_exists("apc_cache_info") && function_exists("apc_sma_info")) {
   // Total number of cache purges
   $purges = $cache['expunges'];
 
+  $optcode_mem_size = $cache['mem_size'];
+
   //apc_clear_cache($cache_mode);
 
 
@@ -77,6 +79,8 @@ if(function_exists("apc_cache_info") && function_exists("apc_sma_info")) {
   // Total number of cache purges
   $user_purges = $cache['expunges'];
 
+  $user_mem_size = $cache['mem_size'];
+
   $out = array(
     'size: ' . sprintf("%.2f", $mem_size),
     'used: ' . sprintf("%.2f", $mem_used),
@@ -98,6 +102,9 @@ if(function_exists("apc_cache_info") && function_exists("apc_sma_info")) {
     'fragment_percentage: ' . sprintf("%.2f", ($fragsize/$mem_avail)*100),
     'fragmented: ' . sprintf("%.2f", $fragsize),
     'fragment_segments: ' . $freeseg,
+
+    'optcode_size: ' . $optcode_mem_size,
+    'user_size: ' . $user_mem_size,
 
     'user_hits: ' . sprintf("%.2f", ($user_hits + $user_misses) ? ($user_hits * 100 / ($user_hits + $user_misses)) : 0),
     'user_misses: ' . sprintf("%.2f", ($user_hits + $user_misses) ? ($user_misses * 100 / ($user_hits + $user_misses)) : 0),

@@ -150,6 +150,22 @@ insert_rate.min 0
 }
 
 
+## PHP APC Cache Usage
+if($plugin eq 'mem_size') {
+print('multigraph php_apc_mem_size
+graph_title Cache Usage
+graph_args --base 1024 -l 0
+graph_vlabel Bytes
+graph_category php-apc
+optcode_size.label Used for Optocde
+optcode_size.draw AREASTACK
+user_size.label Used for User Cache
+user_size.draw AREASTACK
+free.label Available Memory
+free.draw AREASTACK
+');
+}
+
 ## PHP APC User Cache Hit / Miss by percentage
 elsif($plugin eq 'user_hit_miss') {
 print('multigraph php_apc_user_hit_miss
@@ -316,6 +332,17 @@ foreach my $port (@PORTS)
             print "fragment_percentage.value U\n";
     }
 
+    if ($response->content =~ /optcode_size:\s+([0-9\.]+)/im) {
+            print "optcode_size.value $1\n";
+    } else {
+            print "optcode_size.value U\n";
+    }
+
+    if ($response->content =~ /user_size:\s+([0-9\.]+)/im) {
+            print "user_size.value $1\n";
+    } else {
+            print "user_size.value U\n";
+    }
 
     if ($response->content =~ /user_hits:\s+([0-9\.]+)/im) {
             print "user_hits.value $1\n";
