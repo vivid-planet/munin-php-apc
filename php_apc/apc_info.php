@@ -35,7 +35,7 @@ if(function_exists("apc_cache_info") && function_exists("apc_sma_info")) {
   }
 
   $cache_mode = 'opmode';
-  $cache=@apc_cache_info($cache_mode);
+  $cache=@apc_cache_info($cache_mode, true);
 
   // Item hits, misses and inserts
   $hits = $cache['num_hits'];
