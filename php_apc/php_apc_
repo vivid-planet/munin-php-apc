@@ -97,10 +97,14 @@ graph_title Purge rate
 graph_args --base 1000 --lower-limit 0 --upper-limit 100 --rigid
 graph_vlabel Percent
 graph_category php-apc
-purge_rate.label Purge Rate
+purge_rate.label Optcode Cache
 purge_rate.draw LINE2
 purge_rate.min 0
 purge_rate.warning 10
+user_purge_rate.label User Cache
+user_purge_rate.draw LINE2
+user_purge_rate.min 0
+user_purge_rate.warning 10
 ');
 }
 
@@ -168,20 +172,6 @@ user_misses.label Misses
 user_misses.draw STACK
 user_misses.min 0
 user_misses.warning 50
-');
-}
-
-## PHP APC User Cache Purge rate (# Entries / Inserts)
-elsif($plugin eq 'user_purge') {
-print('multigraph php_apc_user_purge
-graph_title User Purge rate
-graph_args --base 1000 --lower-limit 0 --upper-limit 100 --rigid
-graph_vlabel Percent
-graph_category php-apc
-user_purge_rate.label Purge Rate
-user_purge_rate.draw LINE2
-user_purge_rate.min 0
-user_purge_rate.warning 10
 ');
 }
 
