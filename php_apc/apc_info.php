@@ -34,6 +34,7 @@ if(function_exists("apc_cache_info") && function_exists("apc_sma_info")) {
     $freeseg = 0;
   }
 
+////Optcode (file) Cache
   $cache_mode = 'opmode';
   $cache=@apc_cache_info($cache_mode, true);
 
@@ -58,7 +59,7 @@ if(function_exists("apc_cache_info") && function_exists("apc_sma_info")) {
 
   //apc_clear_cache($cache_mode);
 
-
+////User Cache
   $cache_mode = 'user';
   $cache=@apc_cache_info($cache_mode, true);
 
