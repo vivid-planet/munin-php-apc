@@ -56,10 +56,32 @@ if(function_exists("apc_cache_info") && function_exists("apc_sma_info")) {
 
   //apc_clear_cache($cache_mode);
 
+
+  $cache_mode = 'user';
+  $cache=@apc_cache_info($cache_mode, true);
+
+  // Item hits, misses and inserts
+  $user_hits = $cache['num_hits'];
+  $user_misses = $cache['num_misses'];
+  $user_inserts = $cache['num_inserts'];
+
+  //
+  $user_req_rate = ($cache['num_hits']+$cache['num_misses'])/($time-$cache['start_time']);
+  $user_hit_rate = ($cache['num_hits'])/($time-$cache['start_time']); // Number of entries in cache $number_entries = $cache['num_entries'];
+  $user_miss_rate = ($cache['num_misses'])/($time-$cache['start_time']); // Total number of cache purges $purges = $cache['expunges'];
+  $user_insert_rate = ($cache['num_inserts'])/($time-$cache['start_time']);
+
+  // Number of entries in cache
+  $user_number_entries = $cache['num_entries'];
+
+  // Total number of cache purges
+  $user_purges = $cache['expunges'];
+
   $out = array(
     'size: ' . sprintf("%.2f", $mem_size),
     'used: ' . sprintf("%.2f", $mem_used),
     'free: ' . sprintf("%.2f", $mem_avail - $fragsize),
+
     'hits: ' . sprintf("%.2f", $hits * 100 / ($hits + $misses)),
     'misses: ' . sprintf("%.2f", $misses * 100 / ($hits + $misses)),
     'request_rate: ' . sprintf("%.2f", $req_rate),
@@ -76,6 +98,19 @@ if(function_exists("apc_cache_info") && function_exists("apc_sma_info")) {
     'fragment_percentage: ' . sprintf("%.2f", ($fragsize/$mem_avail)*100),
     'fragmented: ' . sprintf("%.2f", $fragsize),
     'fragment_segments: ' . $freeseg,
+
+    'user_hits: ' . sprintf("%.2f", ($user_hits + $user_misses) ? ($user_hits * 100 / ($user_hits + $user_misses)) : 0),
+    'user_misses: ' . sprintf("%.2f", ($user_hits + $user_misses) ? ($user_misses * 100 / ($user_hits + $user_misses)) : 0),
+    'user_request_rate: ' . sprintf("%.2f", $user_req_rate),
+    'user_hit_rate: ' . sprintf("%.2f", $user_hit_rate),
+    'user_miss_rate: ' . sprintf("%.2f", $user_miss_rate),
+    'user_insert_rate: ' . sprintf("%.2f", $user_insert_rate),
+    'user_entries: ' . $user_number_entries,
+    'user_inserts: ' . $user_inserts,
+    'user_purges: ' . $user_purges,
+
+  // TODO: Delete
+    'user_purge_rate: ' . sprintf("%.2f", $user_inserts ? (100 - ($user_number_entries / $user_inserts) * 100) : 0),
   );
 }
 else {

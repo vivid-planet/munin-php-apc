@@ -149,6 +149,75 @@ insert_rate.min 0
 ');
 }
 
+
+## PHP APC User Cache Hit / Miss by percentage
+elsif($plugin eq 'user_hit_miss') {
+print('multigraph php_apc_user_hit_miss
+graph_title User Cache Hits / Misses
+graph_args --base 1000 --lower-limit 0 --upper-limit 100 --rigid
+graph_vlabel Percent
+graph_category php-apc
+graph_total Total
+user_hits.label Hits
+user_hits.draw AREA
+user_hits.min 0
+user_misses.label Misses
+user_misses.draw STACK
+user_misses.min 0
+user_misses.warning 50
+');
+}
+
+## PHP APC User Cache Purge rate (# Entries / Inserts)
+elsif($plugin eq 'user_purge') {
+print('multigraph php_apc_user_purge
+graph_title User Purge rate
+graph_args --base 1000 --lower-limit 0 --upper-limit 100 --rigid
+graph_vlabel Percent
+graph_category php-apc
+user_purge_rate.label Purge Rate
+user_purge_rate.draw LINE2
+user_purge_rate.min 0
+user_purge_rate.warning 10
+');
+}
+
+## PHP APC User Cache Number of entries in cache
+elsif($plugin eq 'user_entries') {
+print('multigraph php_apc_user_entries
+graph_title User Entries in Cache
+graph_args -l 0
+graph_vlabel Number of Entries
+graph_category php-apc
+user_entries.label Number of entries
+user_entries.draw LINE2
+user_entries.min 0
+');
+}
+
+## PHP APC User Cache Rates
+elsif($plugin eq 'user_rates') {
+print('multigraph php_apc_user_rates
+graph_title User Cache Hit, Miss and Insert Rates
+graph_args --base 1000
+graph_vlabel Cache Requests / Second
+graph_category php-apc
+user_request_rate.label Request rate (Hits + Misses)
+user_request_rate.draw LINE2
+user_request_rate.min 0
+user_hit_rate.label Hit rate
+user_hit_rate.draw LINE2
+user_hit_rate.min 0
+user_miss_rate.label Miss rate
+user_miss_rate.draw LINE2
+user_miss_rate.min 0
+user_insert_rate.label Insert rate
+user_insert_rate.draw LINE2
+user_insert_rate.min 0
+');
+}
+
+
 exit 0;
 }
 
@@ -245,6 +314,67 @@ foreach my $port (@PORTS)
             print "fragment_percentage.value $1\n";
     } else {
             print "fragment_percentage.value U\n";
+    }
+
+
+    if ($response->content =~ /user_hits:\s+([0-9\.]+)/im) {
+            print "user_hits.value $1\n";
+    } else {
+            print "user_hits.value U\n";
+    }
+
+    if ($response->content =~ /user_misses:\s+([0-9\.]+)/im) {
+            print "user_misses.value $1\n";
+    } else {
+            print "user_misses.value U\n";
+    }
+
+    if ($response->content =~ /user_request_rate:\s+([0-9\.]+)/im) {
+            print "user_request_rate.value $1\n";
+    } else {
+            print "user_request_rate.value U\n";
+    }
+
+    if ($response->content =~ /user_hit_rate:\s+([0-9\.]+)/im) {
+            print "user_hit_rate.value $1\n";
+    } else {
+            print "user_hit_rate.value U\n";
+    }
+
+    if ($response->content =~ /user_miss_rate:\s+([0-9\.]+)/im) {
+            print "user_miss_rate.value $1\n";
+    } else {
+            print "user_miss_rate.value U\n";
+    }
+
+    if ($response->content =~ /user_insert_rate:\s+([0-9\.]+)/im) {
+            print "user_insert_rate.value $1\n";
+    } else {
+            print "user_insert_rate.value U\n";
+    }
+
+    if ($response->content =~ /user_entries:\s+([0-9]+)/im) {
+            print "user_entries.value $1\n";
+    } else {
+            print "user_entries.value U\n";
+    }
+
+    if ($response->content =~ /user_inserts:\s+([0-9]+)/im) {
+            print "user_inserts.value $1\n";
+    } else {
+            print "user_inserts.value U\n";
+    }
+
+    if ($response->content =~ /user_purges:\s+([0-9]+)/im) {
+            print "user_purges.value $1\n";
+    } else {
+            print "user_purges.value U\n";
+    }
+
+    if ($response->content =~ /user_purge_rate:\s+([0-9\.]+)/im) {
+            print "user_purge_rate.value $1\n";
+    } else {
+            print "user_purge_rate.value U\n";
     }
 }
 
