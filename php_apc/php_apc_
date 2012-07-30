@@ -61,12 +61,25 @@ graph_order used free
 graph_total Total
 used.label Used Memory
 used.draw AREASTACK
-optcode_size.label Used for Optcode
-optcode_size.draw AREASTACK
-user_size.label Used for User Cache
-user_size.draw AREASTACK
 fragmented.label Fragmented Memory
 fragmented.draw AREASTACK
+free.label Available Memory
+free.draw AREASTACK
+');
+}
+
+## PHP APC Cache Usage
+if($plugin eq 'mem_size') {
+print('multigraph php_apc_mem_size
+graph_title Used Memory
+graph_args --base 1024 -l 0
+graph_vlabel Bytes
+graph_category php-apc
+graph_total Total
+optcode_size.label Optcode Cache
+optcode_size.draw AREASTACK
+user_size.label User Cache
+user_size.draw AREASTACK
 free.label Available Memory
 free.draw AREASTACK
 ');
