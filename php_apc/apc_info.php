@@ -71,11 +71,11 @@ if(function_exists("apc_cache_info") && function_exists("apc_sma_info")) {
     'purges: ' . $purges,
 
   // TODO: Delete
-	'purge_rate: ' . sprintf("%.2f", (100 - ($number_entries / $inserts) * 100)),
+    'purge_rate: ' . sprintf("%.2f", (100 - ($number_entries / $inserts) * 100)),
   // TODO: Delete
-	'fragment_percentage: ' . sprintf("%.2f", ($fragsize/$mem_avail)*100),
-	'fragmented: ' . sprintf("%.2f", $fragsize),
-	'fragment_segments: ' . $freeseg,
+    'fragment_percentage: ' . sprintf("%.2f", ($fragsize/$mem_avail)*100),
+    'fragmented: ' . sprintf("%.2f", $fragsize),
+    'fragment_segments: ' . $freeseg,
   );
 }
 else {
