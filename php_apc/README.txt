@@ -37,13 +37,17 @@ USAGE
   env.url http://www.example.com/apc_info.php?auto
   
   
-  There are 6 available graphs for this multi graph plugin:
+  There are 10 available graphs for this multi graph plugin:
     - php_apc_files
     - php_apc_fragmentation
     - php_apc_hit_miss
     - php_apc_purge
     - php_apc_rates
     - php_apc_usage
+    - php_apc_mem_size
+    - php_apc_user_hit_miss
+    - php_apc_user_entries
+    - php_apc_user_rates
 
   Each required graph should be added to the plugins directory, usually found in:
     /etc/munin/plugins/
