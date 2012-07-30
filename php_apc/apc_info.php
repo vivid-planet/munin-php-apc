@@ -85,7 +85,7 @@ if(function_exists("apc_cache_info") && function_exists("apc_sma_info")) {
   $out = array(
     'size: ' . $mem_size,
     'used: ' . $mem_used,
-    'free: ' . $mem_avail - $fragsize,
+    'free: ' . ($mem_avail - $fragsize),
 
     'hits: ' . sprintf("%.2f", $hits * 100 / ($hits + $misses)),
     'misses: ' . sprintf("%.2f", $misses * 100 / ($hits + $misses)),
