@@ -1,0 +1,251 @@
+#!/usr/bin/perl
+#
+# Magic markers:
+#%# family=auto
+#%# capabilities=autoconf
+
+use strict;
+use Munin::Plugin;
+
+need_multigraph();
+
+my $ret = undef;
+
+if (! eval "require LWP::UserAgent;")
+{
+	$ret = "LWP::UserAgent not found";
+}
+
+my $URL = exists $ENV{'url'} ? $ENV{'url'} : "http://127.0.0.1:%d/apc_info.php?auto";
+my @PORTS = exists $ENV{'ports'} ? split(' ', $ENV{'ports'}) : (80);
+
+if ( defined $ARGV[0] and $ARGV[0] eq "autoconf" )
+{
+	if ($ret)
+	{
+		print "no ($ret)\n";
+		exit 1;
+	}
+
+	my $ua = LWP::UserAgent->new(timeout => 30);
+
+	my @badports;
+	foreach my $port (@PORTS) {
+		my $url = sprintf $URL, $port;
+		my $response = $ua->request(HTTP::Request->new('GET',$url));
+		push @badports, $port unless $response->is_success and $response->content =~ /^size:/im;
+	}
+	if (@badports) {
+		print "no (apc-status)\n";
+		exit 1;
+	} else {
+		print "yes\n";
+		exit 0;
+	}
+}
+
+if ( defined $ARGV[0] and $ARGV[0] eq "config" )
+{
+
+$0 =~ /php_apc_(.+)*/;
+my $plugin = $1;
+
+## PHP APC Cache Usage
+if($plugin eq 'usage') {
+print('multigraph php_apc_usage
+graph_title Cache Usage
+graph_args --base 1024 -l 0
+graph_vlabel Bytes
+graph_category php-apc
+graph_order used free
+graph_total Total
+used.label Used Memory
+used.draw AREASTACK
+fragmented.label Fragmented Memory
+fragmented.draw AREASTACK
+free.label Available Memory
+free.draw AREASTACK
+');
+}
+
+## PHP APC Hit / Miss by percentage
+elsif($plugin eq 'hit_miss') {
+print('multigraph php_apc_hit_miss
+graph_title Cache Hits / Misses
+graph_args --base 1000 --lower-limit 0 --upper-limit 100 --rigid
+graph_vlabel Percent
+graph_category php-apc
+graph_total Total
+hits.label Hits
+hits.draw AREA
+hits.min 0
+misses.label Misses
+misses.draw STACK
+misses.min 0
+misses.warning 50
+');
+}
+
+## PHP APC Purge rate (# Entries / Inserts)
+elsif($plugin eq 'purge') {
+print('multigraph php_apc_purge
+graph_title Purge rate
+graph_args --base 1000 --lower-limit 0 --upper-limit 100 --rigid
+graph_vlabel Percent
+graph_category php-apc
+purge_rate.label Purge Rate
+purge_rate.draw LINE2
+purge_rate.min 0
+purge_rate.warning 10
+');
+}
+
+## PHP APC Fragmentation
+elsif($plugin eq 'fragmentation') {
+print('multigraph php_apc_fragmentation
+graph_title Fragmentation
+graph_args --base 1000 --upper-limit 100
+graph_vlabel Percent
+graph_category php-apc
+fragment_percentage.label Fragmentation Percent
+fragment_percentage.draw LINE2
+fragment_percentage.min 0
+fragment_percentage.warning 10
+');
+}
+
+## PHP APC Number of files in cache
+elsif($plugin eq 'files') {
+print('multigraph php_apc_files
+graph_title Files in Cache
+graph_args -l 0
+graph_vlabel Number of Files
+graph_category php-apc
+entries.label Number of files
+entries.draw LINE2
+entries.min 0
+');
+}
+
+## PHP APC Rates
+elsif($plugin eq 'rates') {
+print('multigraph php_apc_rates
+graph_title Hit, Miss and Insert Rates
+graph_args --base 1000
+graph_vlabel Cache Requests / Second
+graph_category php-apc
+request_rate.label Request rate (Hits + Misses)
+request_rate.draw LINE2
+request_rate.min 0
+hit_rate.label Hit rate
+hit_rate.draw LINE2
+hit_rate.min 0
+miss_rate.label Miss rate
+miss_rate.draw LINE2
+miss_rate.min 0
+insert_rate.label Insert rate
+insert_rate.draw LINE2
+insert_rate.min 0
+');
+}
+
+exit 0;
+}
+
+foreach my $port (@PORTS)
+{
+    my $ua = LWP::UserAgent->new(timeout => 30);
+    my $url = sprintf $URL, $port;
+    my $response = $ua->request(HTTP::Request->new('GET',$url));
+
+    if ($response->content =~ /used:\s+([0-9\.]+)/im) {
+        print "used.value $1\n";
+    } else {
+        print "used.value U\n";
+    }
+    if ($response->content =~ /free:\s+([0-9\.]+)/im) {
+            print "free.value $1\n";
+    } else {
+            print "free.value U\n";
+    }
+	
+    if ($response->content =~ /hits:\s+([0-9\.]+)/im) {
+            print "hits.value $1\n";
+    } else {
+            print "hits.value U\n";
+    }
+    
+    if ($response->content =~ /misses:\s+([0-9\.]+)/im) {
+            print "misses.value $1\n";
+    } else {
+            print "misses.value U\n";
+    }
+
+    if ($response->content =~ /request_rate:\s+([0-9\.]+)/im) {
+            print "request_rate.value $1\n";
+    } else {
+            print "request_rate.value U\n";
+    }
+
+    if ($response->content =~ /hit_rate:\s+([0-9\.]+)/im) {
+            print "hit_rate.value $1\n";
+    } else {
+            print "hit_rate.value U\n";
+    }
+
+    if ($response->content =~ /miss_rate:\s+([0-9\.]+)/im) {
+            print "miss_rate.value $1\n";
+    } else {
+            print "miss_rate.value U\n";
+    }
+
+    if ($response->content =~ /insert_rate:\s+([0-9\.]+)/im) {
+            print "insert_rate.value $1\n";
+    } else {
+            print "insert_rate.value U\n";
+    }
+
+    if ($response->content =~ /entries:\s+([0-9]+)/im) {
+            print "entries.value $1\n";
+    } else {
+            print "entries.value U\n";
+    }
+
+    if ($response->content =~ /inserts:\s+([0-9]+)/im) {
+            print "inserts.value $1\n";
+    } else {
+            print "inserts.value U\n";
+    }
+
+    if ($response->content =~ /purges:\s+([0-9]+)/im) {
+            print "purges.value $1\n";
+    } else {
+            print "purges.value U\n";
+    }
+
+    if ($response->content =~ /purge_rate:\s+([0-9\.]+)/im) {
+            print "purge_rate.value $1\n";
+    } else {
+            print "purge_rate.value U\n";
+    }
+
+    if ($response->content =~ /fragmented:\s+([0-9\.]+)/im) {
+            print "fragmented.value $1\n";
+    } else {
+            print "fragmented.value U\n";
+    }
+
+    if ($response->content =~ /fragment_segments:\s+([0-9]+)/im) {
+            print "fragment_segments.value $1\n";
+    } else {
+            print "fragment_segments.value U\n";
+    }
+
+    if ($response->content =~ /fragment_percentage:\s+([0-9\.]+)/im) {
+            print "fragment_percentage.value $1\n";
+    } else {
+            print "fragment_percentage.value U\n";
+    }
+}
+
+# vim:syntax=perl
