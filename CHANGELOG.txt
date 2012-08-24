@@ -1,3 +1,7 @@
+php_apc_, 2012-08-24
+----------------------
+- Clean up docs and code style.
+
 php_apc_, 2012-07-30
 ----------------------
 - Add User Cache graphs.
