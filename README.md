@@ -1,4 +1,4 @@
-# CONTENTS OF THIS FILE
+# Contents of this File
 
  - Requirements
  - Documentation
@@ -8,21 +8,21 @@
  - Licensing
 
 
-# REQUIREMENTS
+# Requirements
 
 The php_apc_ plugin is made for the Munin v1.4.0+ monitoring system.
 
 The Munin homepage can be found at: http://munin-monitoring.org/
 
 
-# DOCUMENTATION
+# Documentation
 
 Project homepage:  http://code.google.com/p/munin-php-apc/
 
 
-# USAGE
+# Usage
 
-Copy the file apc_info.php to a location accessable to the web server, such as:
+Copy the file apc_info.php to a location accessible to the web server, such as:
 
     www.example.com/apc_info.php
   
@@ -50,10 +50,10 @@ There are 10 available graphs for this multi graph plugin:
 Each required graph should be added to the plugins directory, usually found in:
 
     /etc/munin/plugins/
-    
+
 The common approach is to copy the file apc_php_ to the directory /usr/share/munin/plugins/
 and the add a symantic link to it from /etc/munin/plugins/
-  
+
 For example:
 
     sudo ln -s /usr/share/munin/plugins/php_apc_ /etc/munin/plugins/php_apc_files
@@ -63,10 +63,9 @@ For example:
 For more information regarding installation of Munin plugins, consult:
 
     http://munin-monitoring.org/wiki/Documentation
-    
 
 
-# ARCHIVE CONTENTS
+# Archive Contents
 
   The complete project archive contains the following files:
 
@@ -76,11 +75,11 @@ For more information regarding installation of Munin plugins, consult:
     README.txt      - this file.
 
 
-# TODO
+# Todo
 
   - Rewrite Munin plugin in PHP rather than Perl.
 
 
-# LICENSING
+# Licensing
 
 php_apc_ is licensed under MIT (http://www.opensource.org/licenses/mit-license.php).
