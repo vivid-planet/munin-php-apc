@@ -48,6 +48,8 @@ For example:
     sudo ln -s /usr/share/munin/plugins/php_apc_ /etc/munin/plugins/php_apc_fragmentation
     ..
 
+After symlinking the files, restart munin-node (`$ sudo service munin-node restart`).
+
 For more information regarding installation of Munin plugins, read the
 [Munin documentation][1].
 
