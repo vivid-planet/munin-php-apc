@@ -36,12 +36,11 @@ There are 10 available graphs for this multi graph plugin:
   - `php_apc_user_entries`
   - `php_apc_user_rates`
 
-Each required graph should be added to the plugins directory, usually found in:
-
-    /etc/munin/plugins/
+Each required graph should be added to the plugins directory, usually found in
+`/etc/munin/plugins/`.
 
 The common approach is to copy the file `apc_php_` to the directory `/usr/share/munin/plugins/`
-and the add a symbolic link to it from `/etc/munin/plugins/`
+and then add a symbolic link to it from `/etc/munin/plugins/`.
 
 For example:
 
@@ -70,7 +69,7 @@ For more information regarding installation of Munin plugins, read the
 
 # Licensing
 
-`php_apc_` uses the [MIT License][2].
+`php_apc_` is licensed under the [MIT License][2].
 
 
 [1]: http://munin-monitoring.org/wiki/Documentation "Munin Documentation"
