@@ -88,7 +88,7 @@ free.draw AREASTACK
 
 ## PHP APC User Cache Usage Only
 if($plugin eq 'user_mem_size') {
-print("multigraph php_apc$custom_name\_mem_size
+print("multigraph php_apc$custom_name\_user_mem_size
 graph_title Used Memory $custom_name
 graph_args --base 1024 -l 0
 graph_vlabel Bytes
@@ -140,7 +140,7 @@ user_purge_rate.warning 10
 
 ## PHP APC User Purge rate (# Entries / Inserts) Only
 elsif($plugin eq 'user_purge') {
-print("multigraph php_apc$custom_name\_purge
+print("multigraph php_apc$custom_name\_user_purge
 graph_title Purge rate $custom_name
 graph_args --base 1000 --lower-limit 0 --upper-limit 100 --rigid
 graph_vlabel Percent
