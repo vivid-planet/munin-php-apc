@@ -47,15 +47,15 @@ if (function_exists("apc_cache_info") && function_exists("apc_sma_info")) {
     $cache = apcu_cache_info();
 
     // Item hits, misses and inserts
-    $user_hits = $cache['nhits'];
-    $user_misses = $cache['nmisses'];
-    $user_inserts = $cache['ninserts'];
-    $user_req_rate = ($cache['nhits'] + $cache['nmisses']) / ($time - $cache['stime']);
-    $user_hit_rate = ($cache['nhits']) / ($time - $cache['stime']); // Number of entries in cache $number_entries = $cache['num_entries'];
-    $user_miss_rate = ($cache['nmisses']) / ($time - $cache['stime']); // Total number of cache purges $purges = $cache['expunges'];
-    $user_insert_rate = ($cache['ninserts']) / ($time - $cache['stime']);
-    $user_number_entries = $cache['nentries']; // Number of entries in cache
-    $user_purges = $cache['nexpunges']; // Total number of cache purges
+    $user_hits = $cache['num_hits'];
+    $user_misses = $cache['num_misses'];
+    $user_inserts = $cache['num_inserts'];
+    $user_req_rate = ($cache['num_hits'] + $cache['num_misses']) / ($time - $cache['start_time']);
+    $user_hit_rate = ($cache['num_hits']) / ($time - $cache['start_time']); // Number of entries in cache $number_entries = $cache['num_entries'];
+    $user_miss_rate = ($cache['num_misses']) / ($time - $cache['start_time']); // Total number of cache purges $purges = $cache['expunges'];
+    $user_insert_rate = ($cache['num_inserts']) / ($time - $cache['start_time']);
+    $user_number_entries = $cache['num_entries']; // Number of entries in cache
+    $user_purges = $cache['expunges']; // Total number of cache purges
     $user_mem_size = $cache['mem_size'];
 
     // Build output array.
